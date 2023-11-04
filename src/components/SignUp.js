@@ -1,17 +1,27 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { Button, Card, CardBody, Container, Form } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const SignUp = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
+    const [showLogin,setShowLogin] = useState(false);
+    const [showSignUp,setShowSignUp] = useState(true);
+  const history = useHistory();
+  
+  const loginSwitchHandler=()=>{
+    setShowLogin(!showLogin);
+  }
+
     const submitHandler=(e)=>{
         e.preventDefault();
         
         const email=emailRef.current.value;
         const password=passwordRef.current.value;
-        const confirmPassword = confirmPasswordRef.current.value;
-        if(password === confirmPassword)
+        // const confirmPassword = confirmPasswordRef.current.value;
+        // if(password === confirmPassword)
+        if(!showLogin)
         {
            
         fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDsNzMsFvb4htGZ3TcwIS3Z7_cMMV-nVrU',{
@@ -26,7 +36,8 @@ const SignUp = () => {
           }).then((res) =>{
             if(res.ok){
                 return res.json().then((data)=>{
-                    console.log('successfully signed up');                  
+                    console.log('successfully signed up'); 
+                    history.replace('/home');                 
                 })
                 
             }else{
@@ -37,7 +48,31 @@ const SignUp = () => {
             }
           }) 
         }else{
-            alert('passwords dont match');
+            // alert('passwords dont match');
+            fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDsNzMsFvb4htGZ3TcwIS3Z7_cMMV-nVrU',{
+        method:'POST',
+        body: JSON.stringify({
+          email:email,
+          password:password,
+          returnSecureToken: true
+        }),headers:{
+          'Content-Type':'application/json'
+        }
+      }).then((res) =>{
+        // setIsSignUp(false);
+        if(res.ok){
+            return res.json().then((data)=>{
+              // authCtx.login(data.idToken);
+              history.replace('/home');
+            })
+            
+        }else{
+          return res.json().then((data)=>{
+            const errorMessage = data.error.message;
+            alert(errorMessage);
+          })
+        }
+      })
         }
     }
   return (
@@ -54,17 +89,28 @@ const SignUp = () => {
         <Form.Label>Password</Form.Label>
         <Form.Control type="password" placeholder="Password" required ref={passwordRef}/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
+     { !showLogin && (<Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
         <Form.Label>Confirm Password</Form.Label>
         <Form.Control type="password" placeholder="Confirm Password" required ref={confirmPasswordRef}/>
-      </Form.Group>
+      </Form.Group>)}
       <Button variant="primary" type="submit">
-       Sign Up
+       {!showLogin?'Sign Up': 'Login'}
       </Button>
     </Form>
     </CardBody>
+    {!showLogin && <Card.Footer>
+      Already have an account? <span style={{color:'blue',cursor:'pointer'}} onClick={loginSwitchHandler}>Login</span>
+      </Card.Footer>}
+      {showLogin && <Card.Footer>
+      Already have an account? <span style={{color:'blue',cursor:'pointer'}} onClick={loginSwitchHandler}>SignUp</span>
+      </Card.Footer>}
     </Card>
-    </Container>
+    
+   
+     
+   
+     </Container>
+
   )
 }
 

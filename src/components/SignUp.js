@@ -36,7 +36,8 @@ const SignUp = () => {
           }).then((res) =>{
             if(res.ok){
                 return res.json().then((data)=>{
-                    console.log('successfully signed up'); 
+                    console.log('successfully signed up');
+                    localStorage.setItem('token',data.idToken); 
                     history.replace('/home');                 
                 })
                 
@@ -63,6 +64,7 @@ const SignUp = () => {
         if(res.ok){
             return res.json().then((data)=>{
               // authCtx.login(data.idToken);
+              localStorage.setItem('token',data.idToken);
               history.replace('/home');
             })
             

@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 const SiteNavbar = () => {
   const history = useHistory();
+  // const token = localStorage.getItem('token');
 
   const logOutHandler=()=>{
     localStorage.removeItem('token');
@@ -18,13 +19,13 @@ const SiteNavbar = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
           <Nav.Link href="/home">Home</Nav.Link>
-          <Nav.Link href="#link">Products</Nav.Link>
+          <Nav.Link href="/expenses">Expenses</Nav.Link>
           <Nav.Link href="#link">About Us</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Container>
     
-      <Nav>
+     <Nav>
         <Button style={{marginRight:'5px'}} onClick={logOutHandler}>Log Out</Button>
       </Nav>
     

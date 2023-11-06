@@ -67,7 +67,7 @@ const SignUp = () => {
             return res.json().then((data)=>{
               // authCtx.login(data.idToken);
               localStorage.setItem('token',data.idToken);
-              history.replace('/home');
+              history.replace('/expenses');
             })
             
         }else{

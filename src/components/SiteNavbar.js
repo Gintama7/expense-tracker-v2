@@ -1,7 +1,15 @@
 import React from 'react'
-import { Container, Nav, Navbar } from 'react-bootstrap'
+import { Button, Container, Nav, Navbar } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 const SiteNavbar = () => {
+  const history = useHistory();
+
+  const logOutHandler=()=>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    history.replace('/');
+  }
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
     <Container>
@@ -15,6 +23,11 @@ const SiteNavbar = () => {
         </Nav>
       </Navbar.Collapse>
     </Container>
+    
+      <Nav>
+        <Button style={{marginRight:'5px'}} onClick={logOutHandler}>Log Out</Button>
+      </Nav>
+    
   </Navbar>
   )
 }

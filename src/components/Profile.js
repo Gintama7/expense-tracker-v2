@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Container, Form } from 'react-bootstrap'
 
 const Profile = () => {
@@ -13,7 +13,8 @@ const Profile = () => {
       })
       .then((res)=>{
       setName(res.data.users[0].displayName)
-      setImgUrl(res.data.users[0].photoURL);
+      // setImgUrl(res.data.users[0].photoURL);
+      console.log(res.data.users[0]);
       })
     },[])
 

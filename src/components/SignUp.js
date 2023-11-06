@@ -19,6 +19,7 @@ const SignUp = () => {
         
         const email=emailRef.current.value;
         const password=passwordRef.current.value;
+        localStorage.setItem('email',email);
         // const confirmPassword = confirmPasswordRef.current.value;
         // if(password === confirmPassword)
         if(!showLogin)

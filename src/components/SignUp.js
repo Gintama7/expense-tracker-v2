@@ -1,13 +1,14 @@
 import React, { useRef, useState } from 'react'
 import { Button, Card, CardBody, Container, Form } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import ForgotPassword from './ForgotPassword';
 
 const SignUp = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
     const [showLogin,setShowLogin] = useState(false);
-    const [showSignUp,setShowSignUp] = useState(true);
+    const [forgotPass,setForgotPass] = useState(false);
   const history = useHistory();
   
   const loginSwitchHandler=()=>{
@@ -80,8 +81,8 @@ const SignUp = () => {
     }
   return (
     <Container className='mt-5 d-flex flex-column justify-content-center align-items-center m-auto'>
-        <Card>
-            <CardBody>
+      {!forgotPass ?  <Card>
+            <Card.Body>
     <Form onSubmit={submitHandler}>
          <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
@@ -96,11 +97,16 @@ const SignUp = () => {
         <Form.Label>Confirm Password</Form.Label>
         <Form.Control type="password" placeholder="Confirm Password" required ref={confirmPasswordRef}/>
       </Form.Group>)}
-      <Button variant="primary" type="submit">
+      <Form.Group className='d-flex flex-column'>
+     {showLogin && <p style={{alignSelf:'center',color:'green',cursor:'pointer'}} onClick={()=>{setForgotPass(true)}}>Forgot password?</p>}
+       <Button variant="primary" type="submit">
+      
        {!showLogin?'Sign Up': 'Login'}
       </Button>
+      </Form.Group>
+     
     </Form>
-    </CardBody>
+    </Card.Body>
     {!showLogin && <Card.Footer>
       Already have an account? <span style={{color:'blue',cursor:'pointer'}} onClick={loginSwitchHandler}>Login</span>
       </Card.Footer>}
@@ -108,7 +114,7 @@ const SignUp = () => {
       Already have an account? <span style={{color:'blue',cursor:'pointer'}} onClick={loginSwitchHandler}>SignUp</span>
       </Card.Footer>}
     </Card>
-    
+   : <ForgotPassword/> }
    
      
    

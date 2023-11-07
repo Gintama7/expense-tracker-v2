@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Card, Container, Form, ListGroup, ListGroupItem } from 'react-bootstrap'
 
 const Expenses = () => {
@@ -6,6 +7,16 @@ const Expenses = () => {
  const descRef = useRef();
  const optionRef = useRef();
  const [expenses,setExpenses] = useState([]);
+
+ useEffect(()=>{
+  axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
+  .then((res)=>{
+    setExpenses([res.data]);
+    // console.log(arr);
+    // arr.forEach((item)=>{console.log(item.amount)});
+    // setExpenses(prev=>[...prev,arr]);
+  })
+ },[])
 
 //  console.log(expenses);
 
@@ -16,7 +27,14 @@ let desc = descRef.current.value;
 let option = optionRef.current.value;
 
 let obj = {id:desc,amount:amount,desc:desc,option:option}
-setExpenses(prev=>[...prev,obj]);
+axios.post('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json',{
+  id:desc,amount:amount,desc:desc,option:option
+}).then((res)=>{ 
+ 
+    console.log(res.data);
+    setExpenses(prev=>[...prev,obj]);
+})
+// setExpenses(prev=>[...prev,obj]);
 amountRef.current.value = 0;
  descRef.current.value= '';
  optionRef.current.value= '';

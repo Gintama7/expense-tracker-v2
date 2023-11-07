@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Card, Container, Form, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { Button, ButtonGroup, Card, Container, Form, ListGroup, ListGroupItem } from 'react-bootstrap'
+import ExpenseList from './ExpenseList';
 
 const Expenses = () => {
- const amountRef = useRef();
- const descRef = useRef();
- const optionRef = useRef();
+ const [amountRef,setAmountRef] = useState(0);
+ const[ descRef,setDescRef] = useState('')
+ const [optionRef,setOptionRef] = useState('food');
  const [expenses,setExpenses] = useState([]);
 
  useEffect(()=>{
@@ -20,25 +21,20 @@ const Expenses = () => {
   })
  },[])
 
-//  console.log(expenses);
 
  const expenseHandler=(e)=>{
 e.preventDefault();
-let amount = amountRef.current.value;
-let desc = descRef.current.value;
-let option = optionRef.current.value;
 
-let obj = {id:desc,amount:amount,desc:desc,option:option}
+// let obj = {id:desc,amount:amount,desc:desc,option:option}
 axios.post('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json',{
-  id:desc,amount:amount,desc:desc,option:option
+  id:descRef,amount:amountRef,desc:descRef,option:optionRef
 }).then((res)=>{  
-    console.log(res.data);
-    setExpenses(prev=>[...prev,obj]);
+    console.log('added successfully');
 })
 // setExpenses(prev=>[...prev,obj]);
-amountRef.current.value = 0;
- descRef.current.value= '';
- optionRef.current.value= '';
+setAmountRef(0);
+setDescRef('');
+setOptionRef('select an option');
  }
   return (
    <Container>
@@ -49,15 +45,15 @@ amountRef.current.value = 0;
             <Form onSubmit={expenseHandler}>
             <Form.Group className="mb-3">
         <Form.Label>Money Spent</Form.Label>
-        <Form.Control placeholder="Enter Amount Spent" type='number' required  ref={amountRef}/>
+        <Form.Control placeholder="Enter Amount Spent" type='number' required  onChange={(e)=>setAmountRef(e.target.value)}/>
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Description</Form.Label>
-        <Form.Control placeholder="Enter description"  required ref={descRef}/>
+        <Form.Control placeholder="Enter description"  required  onChange={(e)=>setDescRef(e.target.value)}/>
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Select Category</Form.Label>
-        <Form.Select ref={optionRef} >
+        <Form.Select onChange={(e)=>setOptionRef(e.target.value)} >
           <option value='food'>Food</option>
           <option value='fuel'>Fuel</option>
           <option value='electricity'>Electricity</option>
@@ -74,12 +70,7 @@ amountRef.current.value = 0;
         
     </Container>
     <Container className='mt-3'>
-    <ListGroup>
-        {expenses.map((expense)=>
-            ( <ListGroupItem key={expense.id}>{expense.amount} {expense.desc} {expense.option}</ListGroupItem>)
-        )}
-       
-    </ListGroup>
+   <ExpenseList expenses={expenses} amountRef={(value)=>setAmountRef(value)} descRef={(value)=>setDescRef(value)} optionRef={(value)=>setOptionRef(value)} />
     </Container>
    </Container>
   )

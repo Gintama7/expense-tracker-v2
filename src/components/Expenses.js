@@ -11,10 +11,12 @@ const Expenses = () => {
  useEffect(()=>{
   axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
   .then((res)=>{
-    setExpenses([res.data]);
-    // console.log(arr);
-    // arr.forEach((item)=>{console.log(item.amount)});
-    // setExpenses(prev=>[...prev,arr]);
+    const data = res.data;
+    for(const key in data){
+      if (data.hasOwnProperty(key)) {
+        setExpenses(prev=>[...prev,data[key]]);
+      }
+    }
   })
  },[])
 
@@ -29,8 +31,7 @@ let option = optionRef.current.value;
 let obj = {id:desc,amount:amount,desc:desc,option:option}
 axios.post('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json',{
   id:desc,amount:amount,desc:desc,option:option
-}).then((res)=>{ 
- 
+}).then((res)=>{  
     console.log(res.data);
     setExpenses(prev=>[...prev,obj]);
 })

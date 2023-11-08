@@ -21,6 +21,20 @@ const Expenses = () => {
   })
  },[])
 
+ const listHandler=(name,value)=>{
+  if(name === 'amount')
+  {
+    setAmountRef(value);
+  }
+  else if(name === 'desc')
+  {
+    setDescRef(value);
+  }else if(name === 'option')
+  {
+    setOptionRef(value);
+  }
+ }
+
 
  const expenseHandler=(e)=>{
 e.preventDefault();
@@ -45,15 +59,15 @@ setOptionRef('select an option');
             <Form onSubmit={expenseHandler}>
             <Form.Group className="mb-3">
         <Form.Label>Money Spent</Form.Label>
-        <Form.Control placeholder="Enter Amount Spent" type='number' required  onChange={(e)=>setAmountRef(e.target.value)}/>
+        <Form.Control placeholder="Enter Amount Spent" type='number' required  onChange={(e)=>setAmountRef(e.target.value)} value={amountRef}/>
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Description</Form.Label>
-        <Form.Control placeholder="Enter description"  required  onChange={(e)=>setDescRef(e.target.value)}/>
+        <Form.Control placeholder="Enter description"  required  onChange={(e)=>setDescRef(e.target.value)} value={descRef}/>
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Select Category</Form.Label>
-        <Form.Select onChange={(e)=>setOptionRef(e.target.value)} >
+        <Form.Select onChange={(e)=>setOptionRef(e.target.value)} value={optionRef} >
           <option value='food'>Food</option>
           <option value='fuel'>Fuel</option>
           <option value='electricity'>Electricity</option>
@@ -70,7 +84,7 @@ setOptionRef('select an option');
         
     </Container>
     <Container className='mt-3'>
-   <ExpenseList expenses={expenses} amountRef={(value)=>setAmountRef(value)} descRef={(value)=>setDescRef(value)} optionRef={(value)=>setOptionRef(value)} />
+   <ExpenseList expenses={expenses} amountRef={listHandler} descRef={listHandler} optionRef={listHandler} amount={amountRef} desc={descRef} option={optionRef} />
     </Container>
    </Container>
   )

@@ -12,18 +12,24 @@ const ExpenseList = (props) => {
             for(const key in data){                
                   if(data[key].id === id)
                   {
-                    props.amountRef(data[key].amount);
-                    props.descRef(data[key].desc);
-                    props.descRef(data[key].option);
+                    props.amountRef('amount',data[key].amount);
+                    props.descRef('desc',data[key].desc);
+                    props.descRef('option',data[key].option);
                     dataPoint=key;
-                                  }
+                }
               
               }
               console.log(dataPoint);
-            //   axios.put(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${dataPoint}.json`,{})
-            //   .then((res)=>{
-            //     console.log('deleted successfully');
-            //   })
+              axios.put(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${dataPoint}.json`,
+              {id:props.desc,amount:props.amount,desc:props.desc})
+              .then((res)=>{
+                console.log('edited successfully');
+                props.amountRef('amount',0);
+                props.descRef('desc','');
+                props.descRef('option','');
+              }).catch((err)=>{
+                console.log(err);
+              })
         })
     }
     const delHandler=(id)=>{

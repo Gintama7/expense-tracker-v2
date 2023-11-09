@@ -2,24 +2,27 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, ButtonGroup, Card, Container, Form, ListGroup, ListGroupItem } from 'react-bootstrap'
 import ExpenseList from './ExpenseList';
+import { useDispatch } from 'react-redux';
+import { expenseActions } from '../store/expenses-slice';
 
-const Expenses = () => {
+const Expenses = (props) => {
  const [amountRef,setAmountRef] = useState(0);
  const[ descRef,setDescRef] = useState('')
  const [optionRef,setOptionRef] = useState('food');
  const [expenses,setExpenses] = useState([]);
+ const dispatch = useDispatch();
 
- useEffect(()=>{
-  axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
-  .then((res)=>{
-    const data = res.data;
-    for(const key in data){
-      if (data.hasOwnProperty(key)) {
-        setExpenses(prev=>[...prev,data[key]]);
-      }
-    }
-  })
- },[])
+//  useEffect(()=>{
+//   axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
+//   .then((res)=>{
+//     const data = res.data;
+//     for(const key in data){
+//       if (data.hasOwnProperty(key)) {
+//         dispatch(expenseActions.addExpense(data[key]));
+//       }
+//     }
+//   })
+//  },[])
 
  const listHandler=(name,value)=>{
   if(name === 'amount')
@@ -84,10 +87,10 @@ setOptionRef('select an option');
         
     </Container>
     <Container className='mt-3'>
-   <ExpenseList expenses={expenses} amountRef={listHandler} descRef={listHandler} optionRef={listHandler} amount={amountRef} desc={descRef} option={optionRef} />
+   <ExpenseList expenses={props.expenses} amountRef={listHandler} descRef={listHandler} optionRef={listHandler} amount={amountRef} desc={descRef} option={optionRef} />
     </Container>
    </Container>
   )
 }
 
-export default Expenses
+export default React.memo(Expenses)

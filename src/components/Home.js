@@ -1,12 +1,15 @@
 import axios from 'axios';
 import React from 'react'
-import { Container } from 'react-bootstrap'
+import { Button, Container, Nav } from 'react-bootstrap'
+import { useSelector } from 'react-redux';
 import {Link} from 'react-router-dom';
 
 const Home = () => {
 
+  const isAuth = useSelector((state)=> state.auth.isAuthenticated);
+  const token = useSelector((state)=> state.auth.token);
+
   const verifyHandler=()=>{
-   let token =  localStorage.getItem('token');
     axios.post('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDsNzMsFvb4htGZ3TcwIS3Z7_cMMV-nVrU',
     {
       requestType:'VERIFY_EMAIL',idToken:token
@@ -18,11 +21,20 @@ const Home = () => {
     })
   }
   return (
-    <Container>
-        <h2>Welcome to Expense Tracker</h2>
-        <p>Your profile is incomplete. <Link to='/profile'>Complete Now</Link></p>
-        <p onClick={verifyHandler}>Verify your email</p>
-    </Container>
+    
+      <Container className='d-flex flex-column align-items-center mt-5 justify-content-center'>
+      <h2>Welcome to Expense Tracker</h2>          
+        {!isAuth ? 
+         
+          <Link to="/login">Get Started</Link>
+         
+         :
+        <>
+          <p>Your profile is incomplete. <Link to='/profile'>Complete Now</Link></p>
+        <p onClick={verifyHandler} style={{cursor:'pointer', color:'blue',textDecoration:'underline'}}>Verify your email</p>
+        </>}
+        
+        </Container>
   )
 }
 

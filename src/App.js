@@ -9,34 +9,63 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import Expenses from './components/Expenses';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from './store/auth-slice';
+import { expenseActions } from './store/expenses-slice';
 
 function App() {
-  // const [isLogin,setIsLogin] = useState(false);
+  const dispatch = useDispatch();  
+  const isAuth = useSelector((state)=>state.auth.isAuthenticated);
+  const expenses = useSelector(state => state.expensesList.expenses)
+  // const [expenses,setExpenses] = useState([]);
 
   // useEffect(()=>{
-  //   let token = localStorage.getItem('token');
-  //   if(token)
-  //   {
-  //     setIsLogin(true);
-  //   }
-  // },[])
+  //   axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
+  //   .then((res)=>{
+  //     const data = res.data;
+  //     for(const key in data){
+  //       if (data.hasOwnProperty(key)) {
+  //         setExpenses(prev=>[...prev,data[key]]);
+  //       }
+  //     }
+  //   })
+  //  },[])
+
+  useEffect(()=>{
+    let token = localStorage.getItem('token');
+    if(token)
+    {
+      console.log(token);
+      dispatch(authActions.login(token));
+      axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
+  .then((res)=>{
+    const data = res.data;
+    for(const key in data){
+      if (data.hasOwnProperty(key)) {
+        dispatch(expenseActions.addExpense(data[key]));
+      }
+    }
+  })
+    }
+  },[])
+
   
   return (
   <Layout>
     <Switch>
       <Route path="/" exact>
-      <SignUp/>
+      <Home/>
       </Route>
-      <Route path="/home" exact>
-       isLogin && <Home/>
-     {/* {!isLogin && <Redirect to='/'/>} */}
+      <Route path="/login" >
+       <SignUp/>    
       </Route>
-      <Route path="/profile" exact>
+      <Route path="/profile" >
       <Profile/>
      </Route>
-     <Route path="/expenses" exact>
-     <Expenses/>
-     {/* {!isLogin && <Redirect to='/'/>} */}
+     <Route path="/expenses">
+     {isAuth && <Expenses expenses={expenses}/>}
+     {!isAuth && <Redirect to='/'/>}
      </Route>
     </Switch>
      

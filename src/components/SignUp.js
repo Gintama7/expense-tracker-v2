@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react'
-import { Button, Card, CardBody, Container, Form } from 'react-bootstrap'
+import { Button, Card, Container, Form } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import ForgotPassword from './ForgotPassword';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../store/auth-slice';
 
 const SignUp = () => {
     const emailRef = useRef();
@@ -10,6 +12,7 @@ const SignUp = () => {
     const [showLogin,setShowLogin] = useState(false);
     const [forgotPass,setForgotPass] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
   
   const loginSwitchHandler=()=>{
     setShowLogin(!showLogin);
@@ -20,7 +23,7 @@ const SignUp = () => {
         
         const email=emailRef.current.value;
         const password=passwordRef.current.value;
-        localStorage.setItem('email',email);
+        // localStorage.setItem('email',email);
         // const confirmPassword = confirmPasswordRef.current.value;
         // if(password === confirmPassword)
         if(!showLogin)
@@ -39,7 +42,7 @@ const SignUp = () => {
             if(res.ok){
                 return res.json().then((data)=>{
                     console.log('successfully signed up');
-                    localStorage.setItem('token',data.idToken); 
+                     dispatch(authActions.login(data.idToken));
                     history.replace('/home');                 
                 })
                 
@@ -66,7 +69,7 @@ const SignUp = () => {
         if(res.ok){
             return res.json().then((data)=>{
               // authCtx.login(data.idToken);
-              localStorage.setItem('token',data.idToken);
+              dispatch(authActions.login(data.idToken));
               history.replace('/expenses');
             })
             

@@ -9,20 +9,8 @@ const Expenses = (props) => {
  const [amountRef,setAmountRef] = useState(0);
  const[ descRef,setDescRef] = useState('')
  const [optionRef,setOptionRef] = useState('food');
- const [expenses,setExpenses] = useState([]);
  const dispatch = useDispatch();
 
-//  useEffect(()=>{
-//   axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
-//   .then((res)=>{
-//     const data = res.data;
-//     for(const key in data){
-//       if (data.hasOwnProperty(key)) {
-//         dispatch(expenseActions.addExpense(data[key]));
-//       }
-//     }
-//   })
-//  },[])
 
  const listHandler=(name,value)=>{
   if(name === 'amount')
@@ -93,4 +81,4 @@ setOptionRef('select an option');
   )
 }
 
-export default React.memo(Expenses)
+export default Expenses

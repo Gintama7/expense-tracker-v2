@@ -67,4 +67,4 @@ const ExpenseList = (props) => {
   )
 }
 
-export default React.memo(ExpenseList)
+export default ExpenseList

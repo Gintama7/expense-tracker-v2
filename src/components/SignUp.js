@@ -9,7 +9,7 @@ const SignUp = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
-    const [showLogin,setShowLogin] = useState(false);
+    const [showLogin,setShowLogin] = useState(true);
     const [forgotPass,setForgotPass] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();

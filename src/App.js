@@ -8,7 +8,7 @@ import { Route } from 'react-router-dom/cjs/react-router-dom';
 import Home from './components/Home';
 import Profile from './components/Profile';
 import Expenses from './components/Expenses';
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from './store/auth-slice';
@@ -17,7 +17,7 @@ import { expenseActions } from './store/expenses-slice';
 function App() {
   const dispatch = useDispatch();  
   const isAuth = useSelector((state)=>state.auth.isAuthenticated);
-  const expenses = useSelector(state => state.expensesList.expenses);
+  // const expenses = useSelector(state => state.expensesList.expenses);
   // const token = useSelector(state=> state.auth.token);
 
   useEffect(()=>{
@@ -52,7 +52,7 @@ function App() {
       <Profile/>
      </Route>
      <Route path="/expenses">
-     {isAuth && <Expenses expenses={expenses}/>}
+     {isAuth && <Expenses/>}
      {/* {!isAuth && <Redirect to='/'/>} */}
      </Route>
      <Route path='*'>

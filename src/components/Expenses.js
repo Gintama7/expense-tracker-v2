@@ -5,7 +5,7 @@ import ExpenseList from './ExpenseList';
 import { useDispatch } from 'react-redux';
 import { expenseActions } from '../store/expenses-slice';
 
-const Expenses = (props) => {
+const Expenses = () => {
  const [amountRef,setAmountRef] = useState(0);
  const[ descRef,setDescRef] = useState('')
  const [optionRef,setOptionRef] = useState('food');
@@ -30,11 +30,12 @@ const Expenses = (props) => {
  const expenseHandler=(e)=>{
 e.preventDefault();
 
-// let obj = {id:desc,amount:amount,desc:desc,option:option}
+let obj = { id:descRef,amount:amountRef,desc:descRef,option:optionRef}
 axios.post('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json',{
   id:descRef,amount:amountRef,desc:descRef,option:optionRef
 }).then((res)=>{  
     console.log('added successfully');
+    dispatch(expenseActions.addExpense(obj))
 })
 // setExpenses(prev=>[...prev,obj]);
 setAmountRef(0);
@@ -75,7 +76,7 @@ setOptionRef('select an option');
         
     </Container>
     <Container className='mt-3'>
-   <ExpenseList expenses={props.expenses} amountRef={listHandler} descRef={listHandler} optionRef={listHandler} amount={amountRef} desc={descRef} option={optionRef} />
+   <ExpenseList amountRef={listHandler} descRef={listHandler} optionRef={listHandler} amount={amountRef} desc={descRef} option={optionRef} />
     </Container>
    </Container>
   )

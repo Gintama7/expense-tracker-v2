@@ -5,13 +5,16 @@ import ExpenseList from './ExpenseList';
 import { useDispatch, useSelector } from 'react-redux';
 import { expenseActions } from '../store/expenses-slice';
 
+
 const Expenses = () => {
  const [amountRef,setAmountRef] = useState(0);
  const[ descRef,setDescRef] = useState('')
  const [optionRef,setOptionRef] = useState('food');
  const dispatch = useDispatch();
+ const theme = useSelector(state => state.theme.currTheme);
 
-
+ console.log(theme);
+ 
  const listHandler=(name,value)=>{
   if(name === 'amount')
   {
@@ -45,7 +48,7 @@ setOptionRef('select an option');
   return (
    <Container>
     <Container>
-        <Card>
+        <Card id={theme}>
             <Card.Header>Add Expenses</Card.Header>
             <Card.Body>
             <Form onSubmit={expenseHandler}>

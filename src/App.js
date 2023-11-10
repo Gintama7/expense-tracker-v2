@@ -23,8 +23,7 @@ function App() {
   const theme = useSelector(state => state.theme.currTheme);
 
   useEffect(()=>{
-    document.body.className = theme;
-    console.log(theme);
+    document.body.dataset.bsTheme = theme;
   },[theme])
 
   
@@ -44,11 +43,11 @@ function App() {
     }
   })
     }
-  },[])
+  },[isAuth])
 
   
   return (
-  <Layout >
+  <Layout className={theme}>
     <Switch>
       <Route path="/" exact>
       <Home/>

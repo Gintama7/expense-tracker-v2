@@ -7,6 +7,7 @@ import { expenseActions } from '../store/expenses-slice'
 const ExpenseList = (props) => {
   const dispatch = useDispatch();
   const expenses = useSelector(state => state.expensesList.expenses);
+  const premium = useSelector(state => state.expensesList.premium);
     const editHandler=(id)=>{
         let dataPoint='';
         axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
@@ -60,9 +61,14 @@ const ExpenseList = (props) => {
     <ListGroup>
     {expenses.map((expense)=>
         ( <ListGroupItem key={expense.id} className='d-flex align-items-center justify-content-between'>{expense.amount} {expense.desc} {expense.option} 
+       
+       
+        
+       
        <ButtonGroup>
         <Button variant='secondary' onClick={()=>editHandler(expense.id)}>Edit</Button>
         <Button variant='danger' onClick={()=>delHandler(expense.id)}>Delete</Button>
+       {premium && <Button>Activate Premium</Button>}
         </ButtonGroup>
         </ListGroupItem>)
     )}

@@ -24,7 +24,7 @@ function App() {
     let token = localStorage.getItem('token');
     if(token)
     {
-      console.log(token);
+      // console.log(token);
       dispatch(authActions.login(token));
       axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
   .then((res)=>{

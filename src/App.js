@@ -20,6 +20,14 @@ function App() {
   // const expenses = useSelector(state => state.expensesList.expenses);
   // const token = useSelector(state=> state.auth.token);
 
+  const theme = useSelector(state => state.theme.currTheme);
+
+  useEffect(()=>{
+    document.body.className = theme;
+    console.log(theme);
+  },[theme])
+
+  
   useEffect(()=>{
     let token = localStorage.getItem('token');
     if(token)
@@ -40,7 +48,7 @@ function App() {
 
   
   return (
-  <Layout>
+  <Layout >
     <Switch>
       <Route path="/" exact>
       <Home/>

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, ButtonGroup, Card, Container, Form, ListGroup, ListGroupItem } from 'react-bootstrap'
 import ExpenseList from './ExpenseList';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { expenseActions } from '../store/expenses-slice';
 
 const Expenses = () => {

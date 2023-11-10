@@ -1,20 +1,29 @@
-import React from 'react'
-import { Button, Container, Nav, Navbar } from 'react-bootstrap'
+import React, { useEffect } from 'react'
+import { Button, ButtonGroup, Container, Nav, Navbar } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { authActions } from '../store/auth-slice';
+import { themeActions } from '../store/theme-slice';
+import './SiteNavbar.css';
 
 const SiteNavbar = () => {
   const history = useHistory();
   // const token = localStorage.getItem('token');
   const isAuth = useSelector((state)=>state.auth.isAuthenticated);
   const dispatch =useDispatch();
+  const premium = useSelector(state => state.expensesList.premium);
 
+
+  const themeHandler=()=>{
+    dispatch(themeActions.changeTheme());
+  }
 
   const logOutHandler=()=>{
     dispatch(authActions.logout());
     history.replace('/');
   }
+
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
     <Container>
@@ -28,10 +37,15 @@ const SiteNavbar = () => {
       </Navbar.Collapse>
     </Container>
     
+    {premium && <Button variant='warning' size='sm' onClick={themeHandler} >Activate Premium</Button> }
     {isAuth && <Nav>
-        <Button style={{marginRight:'5px'}} onClick={logOutHandler}>Log Out</Button>
+        <Button style={{marginLeft:'5px',marginRight:'5px'}} size='sm' onClick={logOutHandler}>Log Out</Button>  
+      
       </Nav>
-    }
+    }   
+
+    
+    
   </Navbar>
   )
 }

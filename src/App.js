@@ -64,9 +64,9 @@ function App() {
      {isAuth && <Expenses/>}
      {/* {!isAuth && <Redirect to='/'/>} */}
      </Route>
-     <Route path="/edit" >
+     {/* <Route path="/edit" >
       <EditPage/>
-     </Route>
+     </Route> */}
      <Route path='*'>
      <Redirect to='/'/>
      </Route>

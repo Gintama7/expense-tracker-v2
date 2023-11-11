@@ -70,7 +70,7 @@ const SignUp = () => {
             return res.json().then((data)=>{
               // authCtx.login(data.idToken);
               dispatch(authActions.login(data.idToken));
-              history.replace('/expenses');
+              history.replace('/home');
             })
             
         }else{

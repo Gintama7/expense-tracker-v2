@@ -27,7 +27,16 @@ const expenseSlice = createSlice({
                 state.premium = false;
             }
            
-        }
+        },
+        // editExpense(state,action)
+        // {
+        //     const id = action.payload.id;
+        //     const item = state.expenses.find( exp => exp.id === id);
+        //     state.expenses = state.expenses.filter(exp=> exp.id !== id );
+        //     state.totalAmount -= Number(item.amount);
+        //     state.expenses.push(item);
+        //     state.totalAmount+= Number(item.amount);
+        // }
     }
 })
 

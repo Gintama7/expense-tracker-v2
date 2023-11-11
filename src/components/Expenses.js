@@ -66,7 +66,7 @@ setOptionRef('select an option');
           <option value='food'>Food</option>
           <option value='fuel'>Fuel</option>
           <option value='electricity'>Electricity</option>
-          <option value='rent'>Rent</option>
+          <option value='misc'>Misc</option>
           <option value='movie'>Movie</option>
         </Form.Select>
       </Form.Group>

@@ -13,12 +13,14 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from './store/auth-slice';
 import { expenseActions } from './store/expenses-slice';
+import EditPage from './components/EditPage';
 
 function App() {
   const dispatch = useDispatch();  
   const isAuth = useSelector((state)=>state.auth.isAuthenticated);
   // const expenses = useSelector(state => state.expensesList.expenses);
   // const token = useSelector(state=> state.auth.token);
+  const expenseList = useSelector(state=> state.expenseList);
 
   const theme = useSelector(state => state.theme.currTheme);
 
@@ -43,7 +45,7 @@ function App() {
     }
   })
     }
-  },[isAuth])
+  },[expenseList])
 
   
   return (
@@ -61,6 +63,9 @@ function App() {
      <Route path="/expenses">
      {isAuth && <Expenses/>}
      {/* {!isAuth && <Redirect to='/'/>} */}
+     </Route>
+     <Route path="/edit" >
+      <EditPage/>
      </Route>
      <Route path='*'>
      <Redirect to='/'/>

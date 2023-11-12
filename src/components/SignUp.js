@@ -23,6 +23,14 @@ const SignUp = () => {
         
         const email=emailRef.current.value;
         const password=passwordRef.current.value;
+        let changedMail = '';
+        for(let i=0;i<email.length;i++)
+                    {
+                      if(email[i]!== '@' && email[i]!== '.' )
+                      {
+                        changedMail += email[i];
+                      }
+                    }
         // localStorage.setItem('email',email);
         // const confirmPassword = confirmPasswordRef.current.value;
         // if(password === confirmPassword)
@@ -42,7 +50,8 @@ const SignUp = () => {
             if(res.ok){
                 return res.json().then((data)=>{
                     console.log('successfully signed up');
-                     dispatch(authActions.login(data.idToken));
+                    
+                     dispatch(authActions.login({token:data.idToken,email:changedMail}));
                     history.replace('/home');                 
                 })
                 
@@ -69,7 +78,8 @@ const SignUp = () => {
         if(res.ok){
             return res.json().then((data)=>{
               // authCtx.login(data.idToken);
-              dispatch(authActions.login(data.idToken));
+              console.log(changedMail);
+              dispatch(authActions.login({token:data.idToken,email:changedMail}));
               history.replace('/home');
             })
             

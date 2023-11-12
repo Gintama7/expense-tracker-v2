@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { expenseActions } from '../store/expenses-slice';
 
 const EditPage = (props) => {
@@ -10,11 +10,13 @@ const EditPage = (props) => {
     const [inputDesc,setInputDesc] = useState('');
     const [inputCategory,setInputCategory] = useState('food');
     const dispatch =useDispatch();
-
+    const mail = useSelector(state=> state.auth.email);
 
     const updateHandler=()=>{
         let dataPoint='';
-        axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
+        // const mail = localStorage.getItem('email');
+        console.log(mail);
+        axios.get(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${mail}.json`)
         .then((res)=>{
             const data = res.data;
             for(const key in data){                
@@ -28,7 +30,7 @@ const EditPage = (props) => {
               
               }
               console.log(dataPoint);
-              axios.put(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${dataPoint}.json`,
+              axios.put(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${mail}/${dataPoint}.json`,
               {id:inputDesc,amount:inputAmount,desc:inputDesc,option:inputCategory})
               .then((res)=>{
                 console.log('edited successfully');

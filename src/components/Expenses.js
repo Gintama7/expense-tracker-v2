@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react'
-import { Button, ButtonGroup, Card, Container, Form, ListGroup, ListGroupItem } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Button, Card, Container, Form, } from 'react-bootstrap'
 import ExpenseList from './ExpenseList';
 import { useDispatch, useSelector } from 'react-redux';
 import { expenseActions } from '../store/expenses-slice';
@@ -12,6 +12,8 @@ const Expenses = () => {
  const [optionRef,setOptionRef] = useState('food');
  const dispatch = useDispatch();
  const theme = useSelector(state => state.theme.currTheme);
+//  const token = localStorage.getItem('token');
+const mail = useSelector(state => state.auth.email);
 
  console.log(theme);
  
@@ -32,9 +34,10 @@ const Expenses = () => {
 
  const expenseHandler=(e)=>{
 e.preventDefault();
-
+// const mail = localStorage.getItem('email');
+console.log(mail);
 let obj = { id:descRef,amount:amountRef,desc:descRef,option:optionRef}
-axios.post('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json',{
+axios.post(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${mail}.json`,{
   id:descRef,amount:amountRef,desc:descRef,option:optionRef
 }).then((res)=>{  
     console.log('added successfully');

@@ -13,7 +13,9 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from './store/auth-slice';
 import { expenseActions } from './store/expenses-slice';
-import EditPage from './components/EditPage';
+
+
+let isInitial =true;
 
 function App() {
   const dispatch = useDispatch();  
@@ -23,6 +25,7 @@ function App() {
   const expenseList = useSelector(state=> state.expenseList);
 
   const theme = useSelector(state => state.theme.currTheme);
+//  const email = useSelector(state=> state.auth.email);
 
   useEffect(()=>{
     document.body.dataset.bsTheme = theme;
@@ -31,11 +34,13 @@ function App() {
   
   useEffect(()=>{
     let token = localStorage.getItem('token');
+    let email = localStorage.getItem('email');
+ 
     if(token)
     {
       // console.log(token);
-      dispatch(authActions.login(token));
-      axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
+      dispatch(authActions.login({token,email}));
+      axios.get(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${email}.json`)
   .then((res)=>{
     const data = res.data;
     for(const key in data){
@@ -45,7 +50,7 @@ function App() {
     }
   })
     }
-  },[expenseList])
+  },[])
 
   
   return (
@@ -64,9 +69,6 @@ function App() {
      {isAuth && <Expenses/>}
      {/* {!isAuth && <Redirect to='/'/>} */}
      </Route>
-     {/* <Route path="/edit" >
-      <EditPage/>
-     </Route> */}
      <Route path='*'>
      <Redirect to='/'/>
      </Route>

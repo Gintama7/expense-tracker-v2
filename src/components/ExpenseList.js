@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Button, ButtonGroup, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { Button, ButtonGroup, Container, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { expenseActions } from '../store/expenses-slice';
 import Papa from 'papaparse';
@@ -11,6 +11,8 @@ const ExpenseList = (props) => {
   const expenses = useSelector(state => state.expensesList.expenses);
   const [show,setShow] = useState(false);
   const [editId,setEditId] = useState('');
+  const mail = useSelector((state=>state.auth.email))
+  // const mail =localStorage.getItem('email');
 
     const editHandler=(id)=>{
       setShow(true);
@@ -18,8 +20,9 @@ const ExpenseList = (props) => {
     }
 
     const delHandler=(id)=>{
+      
         let dataPoint='';
-        axios.get('https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses.json')
+        axios.get(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${mail}.json`)
         .then((res)=>{
             const data = res.data;
             for(const key in data){
@@ -31,7 +34,7 @@ const ExpenseList = (props) => {
                 // }
               }
               
-              axios.delete(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${dataPoint}.json`)
+              axios.delete(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${mail}/${dataPoint}.json`)
               .then((res)=>{
                 console.log('deleted successfully');
                 dispatch(expenseActions.removeExpense(id));
@@ -54,8 +57,11 @@ const ExpenseList = (props) => {
     }
 
   return (<>
+  
   <EditPage show={show} onHide={()=>setShow(false)  } id={editId}/>
-  <Button onClick={downloadHandler} download='file.csv'>Download expenses</Button>
+  <Container className='mb-2 d-flex justify-content-center'>
+    <Button onClick={downloadHandler} download='file.csv'>Download expenses</Button>
+    </Container>
     <ListGroup>
     {expenses.map((expense)=>
         ( <ListGroupItem key={expense.id} className='d-flex align-items-center justify-content-between'>{expense.amount} {expense.desc} {expense.option} 

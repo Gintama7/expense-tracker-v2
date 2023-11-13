@@ -1,16 +1,24 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { expenseActions } from '../store/expenses-slice';
 
 const EditPage = (props) => {
-
+    const {amount, desc, option }= props.expenseInfo;
     const [inputAmount,setInputAmount] = useState(0);
     const [inputDesc,setInputDesc] = useState('');
-    const [inputCategory,setInputCategory] = useState('food');
+    const [inputCategory,setInputCategory] = useState('');
     const dispatch =useDispatch();
     const mail = useSelector(state=> state.auth.email);
+
+    useEffect(()=>{
+      console.log(amount,desc,option);
+        setInputAmount(amount);
+        setInputDesc(desc);
+        setInputCategory(option);
+    },[props])
+
 
     const updateHandler=()=>{
         let dataPoint='';
@@ -22,20 +30,20 @@ const EditPage = (props) => {
             for(const key in data){                
                   if(data[key].id === props.id)
                   {
-                   setInputAmount(data[key].amount);
-                   setInputDesc(data[key].desc);
-                   setInputCategory(data[key].option);
+                   
                     dataPoint=key;
                 }
               
               }
-              console.log(dataPoint);
+              dispatch(expenseActions.removeExpense(props.id));
+              // console.log(dataPoint);
               axios.put(`https://expense-tracker-v2-e6698-default-rtdb.firebaseio.com/expenses/${mail}/${dataPoint}.json`,
               {id:inputDesc,amount:inputAmount,desc:inputDesc,option:inputCategory})
               .then((res)=>{
                 console.log('edited successfully');
-               props.onHide();
+              
                dispatch(expenseActions.addExpense({id:inputDesc,amount:inputAmount,desc:inputDesc,option:inputCategory}))
+               props.onHide();
               }).catch((err)=>{
                 console.log(err);
               })
@@ -87,4 +95,4 @@ const EditPage = (props) => {
   )
 }
 
-export default EditPage
+export default React.memo(EditPage);

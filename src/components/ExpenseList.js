@@ -11,12 +11,15 @@ const ExpenseList = (props) => {
   const expenses = useSelector(state => state.expensesList.expenses);
   const [show,setShow] = useState(false);
   const [editId,setEditId] = useState('');
+  const [expenseInfo, setExpenseInfo] = useState({amount:0, desc:'',option:''});
   const mail = useSelector((state=>state.auth.email))
   // const mail =localStorage.getItem('email');
 
-    const editHandler=(id)=>{
+    const editHandler=(id,amount,desc,option)=>{
       setShow(true);
       setEditId(id);
+      // console.log(amount,desc,option);
+      setExpenseInfo({ amount:amount, desc:desc, option:option});
     }
 
     const delHandler=(id)=>{
@@ -58,7 +61,7 @@ const ExpenseList = (props) => {
 
   return (<>
   
-  <EditPage show={show} onHide={()=>setShow(false)  } id={editId}/>
+  <EditPage show={show} onHide={()=>setShow(false)  } id={editId} expenseInfo ={expenseInfo}/>
   <Container className='mb-2 d-flex justify-content-center'>
     <Button onClick={downloadHandler} download='file.csv'>Download expenses</Button>
     </Container>
@@ -70,7 +73,7 @@ const ExpenseList = (props) => {
         
        
        <ButtonGroup>
-        <Button variant='secondary' onClick={()=>editHandler(expense.id)}>Edit</Button>
+        <Button variant='secondary' onClick={()=>editHandler(expense.id,expense.amount,expense.desc,expense.option)}>Edit</Button>
         <Button variant='danger' onClick={()=>delHandler(expense.id)}>Delete</Button>
         </ButtonGroup>
         </ListGroupItem>)
